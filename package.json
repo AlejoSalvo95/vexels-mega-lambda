@@ -1,0 +1,22 @@
+{
+  "name": "vexels-mega-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlejoSalvo95/vexels-mega-lambda.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlejoSalvo95/vexels-mega-lambda/issues"
+  },
+  "homepage": "https://github.com/AlejoSalvo95/vexels-mega-lambda#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}

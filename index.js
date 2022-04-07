@@ -52,5 +52,5 @@ app.get("/upload-image", async (req, res, next) => {
 });
 
 app.listen(process.env.PORT || 5000, () => {
- console.log("Server running on port 3000");
+ console.log("Server running on port:", process.env.PORT || 5000);
 });

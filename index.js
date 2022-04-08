@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 var cloudinary = require('cloudinary');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 const cloudinaryV2 = cloudinary.v2
 cloudinaryV2.config({ 
@@ -11,7 +12,6 @@ cloudinaryV2.config({
 	secure: true
 });
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", '*');
     res.header("Access-Control-Allow-Credentials", true);
@@ -20,35 +20,37 @@ app.use(function(req, res, next) {
     next();
 });
 // parse application/json
-app.use(bodyParser.json())
-
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.get("/", (req, res, next) => {
     res.json({message: "Hola"});
 });
 
 app.post('/login',(req, res, next)=> {
-    console.log(req.body, "req.body")
     var user_name = req.body.user;
     var password = req.body.password;
     console.log("User name = "+user_name+", password is "+password);
     res.end("yes");
 });
 
-app.get("/upload-image", async (req, res, next) => {
-    const folder = 'vexels-mega';
-    var {picture, email} = req.body;
-    const fileName = email + new Date().getTime();
-	await cloudinaryV2.uploader.upload(picture,
-		{ folder, public_id: name },
-		function(error, result) {
-			if(error){
-                console.error("Service unavailable")
-			} else {
-				image = result
-			}
-		}
-	);
-	return image
+app.post("/upload-image", async (req, res, next) => {
+    try{
+        const folder = 'vexels-mega';
+        var {picture, email} = req.body;
+        const fileName = email + new Date().getTime();
+        await cloudinaryV2.uploader.upload(picture,
+            { folder, public_id: fileName },
+            function(error, result) {
+                if(error){
+                } else {
+                    image = result
+                }
+            }
+        );
+        res.json({image});
+    } catch (err){
+        console.log(err, "err")
+    }
 });
 
 app.listen(process.env.PORT || 5000, () => {
